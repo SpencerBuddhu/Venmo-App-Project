@@ -25,25 +25,30 @@ public class TransferService {
         URL = url;
     }
 
-    public void sendMoney() {
-        Scanner scanner = new Scanner(System.in);
+    public Transfer sendMoney() {
         Transfer transfer = new Transfer();
-        System.out.println("Enter the ID of the account you wish to send money to: ");
-        int accountId = accountService.getAccountIdByUserId(Integer.parseInt(scanner.nextLine()));
-        transfer.setAccountTo(accountId);
-        int accountFromId = accountService.getAccountIdByUserId(user.getUser().getId());
-        transfer.setAccountFrom(accountFromId);
-        System.out.println("Enter amount you want to send: ");
-        transfer.setAmount(new BigDecimal(Double.parseDouble(scanner.nextLine())));
         try {
-            restTemplate.exchange(URL + "sendMoney/" + transfer.getAccountTo() + transfer.getAccountFrom() + transfer.getAmount(),
-                    HttpMethod.POST,
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the ID of the account you wish to send money to: ");
+
+        transfer.setAccountTo(accountService.getAccountIdByUserId(Integer.parseInt(scanner.nextLine())));
+
+        transfer.setAccountFrom(accountService.getAccountIdByUserId(user.getUser().getId()));
+
+        System.out.println("Enter amount you want to send: ");
+
+        transfer.setAmount(new BigDecimal(Double.parseDouble(scanner.nextLine())));
+
+        transfer = restTemplate.exchange(URL + "sendMoney/" + transfer.getAccountTo() + transfer.getAccountFrom() + transfer.getAmount(),
+                    HttpMethod.PUT,
                     transferToken(transfer),
                     Transfer.class).getBody();
         } catch (Exception e) {
             BasicLogger.log(e.getMessage());
         }
+        return transfer;
     }
+
 
     private HttpEntity token() {
         HttpHeaders headers = new HttpHeaders();
