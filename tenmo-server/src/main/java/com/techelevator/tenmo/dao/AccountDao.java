@@ -13,6 +13,6 @@ public interface AccountDao {
     public BigDecimal getBalance(int userId);
     public BigDecimal subtractBalance(BigDecimal amountToSubtract, int userId);
     public BigDecimal addBalance(BigDecimal amountToAdd, int userId);
-
+    public int getAccountIdByUserId(int userId);
 
 }

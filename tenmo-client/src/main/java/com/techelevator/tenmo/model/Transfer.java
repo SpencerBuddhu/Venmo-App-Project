@@ -1,26 +1,35 @@
 package com.techelevator.tenmo.model;
 
-import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 
 public class Transfer {
 
-    private String userFrom;
-    private String userTo;
     private int transferId;
     private String transferTypeId;
     private String transferStatusId;
     private int accountFrom;
     private int accountTo;
-    @Positive
     private BigDecimal amount;
+    private String userTo;
+    private String userFrom;
+    Account idkAccountTo;
+    Account idkAccountFrom;
 
-    public String getUserFrom() {
-        return userFrom;
+
+    public Account getIdkAccountTo() {
+        return idkAccountTo;
     }
 
-    public void setUserFrom(String userFrom) {
-        this.userFrom = userFrom;
+    public void setIdkAccountTo(Account idkAccountTo) {
+        this.idkAccountTo = idkAccountTo;
+    }
+
+    public Account getIdkAccountFrom() {
+        return idkAccountFrom;
+    }
+
+    public void setIdkAccountFrom(Account idkAccountFrom) {
+        this.idkAccountFrom = idkAccountFrom;
     }
 
     public String getUserTo() {
@@ -29,6 +38,14 @@ public class Transfer {
 
     public void setUserTo(String userTo) {
         this.userTo = userTo;
+    }
+
+    public String getUserFrom() {
+        return userFrom;
+    }
+
+    public void setUserFrom(String userFrom) {
+        this.userFrom = userFrom;
     }
 
     public int getTransferId() {
@@ -78,4 +95,6 @@ public class Transfer {
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
+
+
 }

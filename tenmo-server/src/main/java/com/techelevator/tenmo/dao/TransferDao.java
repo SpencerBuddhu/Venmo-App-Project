@@ -46,4 +46,7 @@ public interface TransferDao {
     void setAmount(BigDecimal amount);
 
     void sendMoney(int accountTo, int accountFrom, BigDecimal amount);
+
+
 }
+

@@ -1,6 +1,7 @@
 package com.techelevator.tenmo.controller;
 
 import com.techelevator.tenmo.dao.AccountDao;
+import com.techelevator.tenmo.dao.UserDao;
 import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.User;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,15 +21,22 @@ public class AccountController {
 
 
     private AccountDao accountDao;
-
-    public AccountController(AccountDao accountDao) {
+    private UserDao userDao;
+    public AccountController(AccountDao accountDao, UserDao userDao) {
+        this.userDao = userDao;
         this.accountDao = accountDao;
     }
 
-    @RequestMapping(path = "/accounts", method = RequestMethod.GET)
+    @RequestMapping(path = "accounts", method = RequestMethod.GET)
     public List <Account> accounts() {
         List <Account> accounts = accountDao.getAccounts();
         return accounts;
+    }
+
+    @RequestMapping(path = "accountsId/{userId}", method = RequestMethod.GET)
+    public int getAccountId (@PathVariable int userId) {
+        int accountId = accountDao.getAccountIdByUserId(userId);
+        return accountId;
     }
 
     @RequestMapping(path = "accounts/{userId}", method = RequestMethod.GET)
@@ -41,5 +49,12 @@ public class AccountController {
         BigDecimal balance = accountDao.getBalance(userId);
         return balance;
     }
+
+    @RequestMapping(path = "users", method = RequestMethod.GET)
+    public List <User> users() {
+        List <User> listUsers = userDao.findAll();
+        return listUsers;
+    }
+
 
 }

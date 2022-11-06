@@ -22,7 +22,7 @@ public class JdbcTransferDao implements TransferDao{
     private BigDecimal amount;
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
+    private AccountDao accountDao;
     public void JdbcAccountDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -126,6 +126,9 @@ public class JdbcTransferDao implements TransferDao{
         }
         return transfer;
     }
+
+
+
 
     @Override
     public void setTransfer(int transferId) {

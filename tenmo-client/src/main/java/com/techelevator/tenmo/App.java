@@ -1,9 +1,12 @@
 package com.techelevator.tenmo;
 
 import com.techelevator.tenmo.model.AuthenticatedUser;
+import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
-import com.techelevator.tenmo.services.AuthenticationService;
-import com.techelevator.tenmo.services.ConsoleService;
+import com.techelevator.tenmo.services.*;
+import io.cucumber.java.bs.A;
+
+import java.math.BigDecimal;
 
 public class App {
 
@@ -11,7 +14,7 @@ public class App {
 
     private final ConsoleService consoleService = new ConsoleService();
     private final AuthenticationService authenticationService = new AuthenticationService(API_BASE_URL);
-
+    private AccountService accountService;
     private AuthenticatedUser currentUser;
 
     public static void main(String[] args) {
@@ -86,8 +89,14 @@ public class App {
 
 	private void viewCurrentBalance() {
 		// TODO Auto-generated method stub
-		
-	}
+    AccountService accountService = new AccountService(API_BASE_URL, currentUser);
+    int id = currentUser.getUser().getId();
+    //**************
+    System.out.println("");
+    System.out.println("Printing balance for account id: " + id);
+    System.out.println("Current balance is: $" + accountService.printBalance());
+
+    }
 
 	private void viewTransferHistory() {
 		// TODO Auto-generated method stub
@@ -101,8 +110,12 @@ public class App {
 
 	private void sendBucks() {
 		// TODO Auto-generated method stub
-		
-	}
+	UserService userService = new UserService(API_BASE_URL, currentUser);
+    userService.printUsers();
+    System.out.println("");
+    TransferService transferService = new TransferService(API_BASE_URL, currentUser);
+    transferService.sendMoney();
+    }
 
 	private void requestBucks() {
 		// TODO Auto-generated method stub
