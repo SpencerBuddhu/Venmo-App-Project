@@ -8,7 +8,7 @@ import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.List;
 
-@PreAuthorize("permitAll()")
+@PreAuthorize("isAuthenticated()")
 @RestController
 public class TransferController {
     private TransferDao transferDao;
@@ -30,6 +30,12 @@ public class TransferController {
         transferDao.sendMoney(accountTo, accountFrom, amount);
 
     }
+
+    @RequestMapping(path = "transfer/user/{userId}", method = RequestMethod.GET)
+    public List<Transfer> getTransferByUserId(@PathVariable int userId) {
+        return transferDao.getTransfersByUserId(userId);
+    }
+
 
 }
 

@@ -14,9 +14,9 @@ import java.math.BigDecimal;
 
 public class AccountService {
 
-    private String URL;
-    private RestTemplate restTemplate = new RestTemplate();
-    private AuthenticatedUser user;
+    private final String URL;
+    private final RestTemplate restTemplate = new RestTemplate();
+    private final AuthenticatedUser user;
 
     public AccountService(String url, AuthenticatedUser user) {
         this.user = user;
@@ -68,7 +68,7 @@ public class AccountService {
     public int getAccountIdByUserId(int userId) {
         int accountId = 0;
         try {
-            accountId = restTemplate.exchange(URL + "accountsId" + userId,
+            accountId = restTemplate.exchange(URL + "accountsId/" + userId,
                     HttpMethod.GET,
                     token(),
                     Integer.class).getBody();

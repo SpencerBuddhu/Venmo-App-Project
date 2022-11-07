@@ -11,9 +11,9 @@ import org.springframework.web.client.RestTemplate;
 
 public class UserService {
 
-    private String URL;
-    private RestTemplate restTemplate = new RestTemplate();
-    private AuthenticatedUser user;
+    private final String URL;
+    private final RestTemplate restTemplate = new RestTemplate();
+    private final AuthenticatedUser user;
 
     public UserService(String url, AuthenticatedUser user) {
         this.user = user;

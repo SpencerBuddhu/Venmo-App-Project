@@ -15,17 +15,18 @@ import java.util.Scanner;
 
 public class TransferService {
 
-    private String URL;
-    private RestTemplate restTemplate = new RestTemplate();
-    private AuthenticatedUser user;
-    private AccountService accountService;
+    private final String URL;
+    private final RestTemplate restTemplate = new RestTemplate();
+    private final AuthenticatedUser user;
+
 
     public TransferService(String url, AuthenticatedUser user) {
         this.user = user;
         URL = url;
     }
 
-    public Transfer sendMoney() {
+    public void sendMoney() {
+        AccountService accountService = new AccountService(URL, user);
         Transfer transfer = new Transfer();
         try {
         Scanner scanner = new Scanner(System.in);
@@ -37,18 +38,43 @@ public class TransferService {
 
         System.out.println("Enter amount you want to send: ");
 
-        transfer.setAmount(new BigDecimal(Double.parseDouble(scanner.nextLine())));
+        transfer.setAmount(BigDecimal.valueOf(Double.parseDouble(scanner.nextLine())));
 
-        transfer = restTemplate.exchange(URL + "sendMoney/" + transfer.getAccountTo() + transfer.getAccountFrom() + transfer.getAmount(),
+        restTemplate.exchange(URL + "sendMoney/" + transfer.getAccountTo() + "/" + transfer.getAccountFrom() + "/" + transfer.getAmount(),
                     HttpMethod.PUT,
                     transferToken(transfer),
                     Transfer.class).getBody();
         } catch (Exception e) {
             BasicLogger.log(e.getMessage());
         }
-        return transfer;
+
     }
 
+    public Transfer[] printTransfers(int userId) {
+        Transfer[] transferList = null;
+        try {
+            transferList = restTemplate.exchange(URL + "transfer/user/" + userId,
+                    HttpMethod.GET,
+                    token(),
+                    Transfer[].class).getBody();
+            for (Transfer transfer: transferList) {
+                System.out.println("Transaction:");
+                System.out.println("");
+                System.out.println("Transfer ID: " + transfer.getTransferId());
+                System.out.println("Transfer Type: " + transfer.getTransferTypeId());
+                System.out.println("Transfer Status: " + transfer.getTransferStatusId());
+                System.out.println("Account from: " + transfer.getAccountFrom());
+                System.out.println("Account to: " + transfer.getAccountTo());
+                System.out.println("Amount: " + transfer.getAmount());
+                System.out.println("");
+                System.out.println("*********************************");
+                System.out.println("");
+            }
+        } catch (Exception e) {
+            BasicLogger.log(e.getMessage());
+        }
+        return transferList;
+    }
 
     private HttpEntity token() {
         HttpHeaders headers = new HttpHeaders();

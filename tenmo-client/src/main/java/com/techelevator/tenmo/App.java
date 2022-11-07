@@ -88,19 +88,22 @@ public class App {
     }
 
 	private void viewCurrentBalance() {
-		// TODO Auto-generated method stub
     AccountService accountService = new AccountService(API_BASE_URL, currentUser);
     int id = currentUser.getUser().getId();
-    //**************
+    System.out.println("");
+    System.out.println("**********************************");
     System.out.println("");
     System.out.println("Printing balance for account id: " + id);
     System.out.println("Current balance is: $" + accountService.printBalance());
+    System.out.println("");
+    System.out.println("**********************************");
+    System.out.println("Enter 0 to return to the main menu");
 
     }
 
 	private void viewTransferHistory() {
-		// TODO Auto-generated method stub
-		
+    TransferService transferService = new TransferService(API_BASE_URL, currentUser);
+    transferService.printTransfers(currentUser.getUser().getId());
 	}
 
 	private void viewPendingRequests() {
@@ -109,12 +112,16 @@ public class App {
 	}
 
 	private void sendBucks() {
-		// TODO Auto-generated method stub
-	UserService userService = new UserService(API_BASE_URL, currentUser);
+    UserService userService = new UserService(API_BASE_URL, currentUser);
+    AccountService accountService = new AccountService(API_BASE_URL, currentUser);
     userService.printUsers();
     System.out.println("");
     TransferService transferService = new TransferService(API_BASE_URL, currentUser);
     transferService.sendMoney();
+    System.out.println("");
+    System.out.println("Transaction Sucessful!");
+    System.out.println("Your new balance is: "+ accountService.printBalance());
+
     }
 
 	private void requestBucks() {

@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 
-@PreAuthorize("permitAll()")
+@PreAuthorize("isAuthenticated()")
 @RestController
 public class AccountController {
 

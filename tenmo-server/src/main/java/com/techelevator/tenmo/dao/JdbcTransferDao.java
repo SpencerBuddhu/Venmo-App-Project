@@ -56,8 +56,19 @@ public class JdbcTransferDao implements TransferDao{
 
     @Override
     public List<Transfer> getTransfersByUserId(int userId) {
-        return null;
-    }
+        List<Transfer> transfersByUserId = new ArrayList<>();
+            String sql = "SELECT transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount " +
+                    "FROM transfer " +
+                    "JOIN account ON account.account_id = transfer.account_from OR account.account_id = transfer.account_to " +
+                    "WHERE user_id = ?";
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
+            while (results.next()) {
+                Transfer transfer = mapRowToTransfer(results);
+                transfersByUserId.add(transfer);
+            }
+            return transfersByUserId;
+        }
+
 
 
     @Override
